@@ -12,9 +12,21 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->decimal('total', 8, 2);
+            $table->string('place');
+            $table->string('phone_number');
+            $table->string('status');
+            $table->text('notes')->nullable();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
-            //$table->softDeletes();
+        });
+
+        Schema::table('carts', function (Blueprint $table) {
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

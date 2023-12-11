@@ -12,8 +12,16 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-
+            $table->string('name');
+            $table->string('images');
+            $table->text('description')->nullable();
+            $table->integer('qty');
+            $table->unsignedBigInteger('category_id');
+            $table->decimal('price', 8, 2);
+            $table->decimal('sale_price', 8, 2)->nullable();
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories');
             //$table->softDeletes();
         });
     }
