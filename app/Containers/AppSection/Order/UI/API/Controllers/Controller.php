@@ -8,6 +8,7 @@ use App\Containers\AppSection\Order\Actions\CreateOrderAction;
 use App\Containers\AppSection\Order\Actions\DeleteOrderAction;
 use App\Containers\AppSection\Order\Actions\FindOrderByIdAction;
 use App\Containers\AppSection\Order\Actions\GetAllOrdersAction;
+use App\Containers\AppSection\Order\Actions\PlaceOrderAction;
 use App\Containers\AppSection\Order\Actions\UpdateOrderAction;
 use App\Containers\AppSection\Order\UI\API\Requests\CreateOrderRequest;
 use App\Containers\AppSection\Order\UI\API\Requests\DeleteOrderRequest;
@@ -33,9 +34,23 @@ class Controller extends ApiController
      */
     public function createOrder(CreateOrderRequest $request): JsonResponse
     {
-        $order = app(CreateOrderAction::class)->run($request);
+        $order = app(PlaceOrderAction::class)->run($request);
 
         return $this->created($this->transform($order, OrderTransformer::class));
+    }
+
+    public function placeOrder(CreateOrderRequest $request): JsonResponse
+    {
+        $order = app(PlaceOrderAction::class)->run($request);
+
+        if ($order instanceof JsonResponse) {
+            return $order;
+        }
+
+        return $this->created([
+            'message' => 'Checkout successful.',
+            'order' => $order,
+        ]);
     }
 
     /**

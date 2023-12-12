@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Cart\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::get('carts', [Controller::class, 'getAllCarts'])
+Route::get('carts', [Controller::class, 'showCart'])
     ->middleware(['auth:api']);
 
