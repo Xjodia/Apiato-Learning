@@ -22,7 +22,7 @@ class UpdateCategoryAction extends ParentAction
     public function run(UpdateCategoryRequest $request): Category
     {
         $data = $request->sanitizeInput([
-            // add your request data here
+            'name'
         ]);
 
         return app(UpdateCategoryTask::class)->run($data, $request->id);

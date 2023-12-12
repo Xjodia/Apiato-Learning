@@ -26,7 +26,7 @@ class CreateCategoryRequest extends ParentRequest
      * validation rules on them and allows accessing them like request data.
      */
     protected array $urlParameters = [
-        // 'id',
+
     ];
 
     /**
@@ -35,7 +35,7 @@ class CreateCategoryRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required',
+            'name' => 'required|string|unique:categories',
         ];
     }
 

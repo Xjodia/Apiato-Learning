@@ -7,7 +7,7 @@ use App\Ship\Parents\Models\Model as ParentModel;
 class Category extends ParentModel
 {
     protected $fillable = [
-
+        'name'
     ];
 
     protected $hidden = [

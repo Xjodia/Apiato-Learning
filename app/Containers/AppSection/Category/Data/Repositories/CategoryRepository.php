@@ -11,6 +11,5 @@ class CategoryRepository extends ParentRepository
      */
     protected $fieldSearchable = [
         'id' => '=',
-        // ...
     ];
 }

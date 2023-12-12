@@ -35,7 +35,10 @@ class UpdateProductRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required'
+            'name' => 'required|string|max:255',
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:category,id',
         ];
     }
 
