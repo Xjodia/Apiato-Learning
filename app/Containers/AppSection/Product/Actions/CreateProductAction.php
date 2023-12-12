@@ -8,6 +8,7 @@ use App\Containers\AppSection\Product\Tasks\CreateProductTask;
 use App\Containers\AppSection\Product\UI\API\Requests\CreateProductRequest;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Parents\Actions\Action as ParentAction;
+use Illuminate\Support\Facades\Storage;
 
 class CreateProductAction extends ParentAction
 {
@@ -19,10 +20,30 @@ class CreateProductAction extends ParentAction
      */
     public function run(CreateProductRequest $request): Product
     {
-        $data = $request->sanitizeInput([
-            // add your request data here
-        ]);
+        $fields = [
+            'name',
+            'images',
+            'description',
+            'category_id',
+            'qty',
+            'price',
+            'sale_price',
+        ];
 
-        return app(CreateProductTask::class)->run($data);
+        $data = $request->sanitizeInput($fields);
+
+        // Create the product in the database
+        $product = app(CreateProductTask::class)->run($data);
+
+        // Upload the image if it exists
+        if ($request->hasFile('images')) {
+            $imageFile = $request->file('images');
+            $imagePath = $imageFile->store('images', 'public');
+            $imageFileName = basename($imagePath);
+
+            // Update the product with the image path
+            $product->update(['images' => Storage::url('images/' . $imageFileName)]);
+        }
+        return $product;
     }
 }
