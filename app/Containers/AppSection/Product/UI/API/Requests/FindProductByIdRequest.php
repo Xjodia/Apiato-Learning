@@ -35,7 +35,8 @@ class FindProductByIdRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required'
+            'id'   => 'required_without:name',
+            'name' => 'required_without:id',
         ];
     }
 

@@ -7,7 +7,13 @@ use App\Ship\Parents\Models\Model as ParentModel;
 class Product extends ParentModel
 {
     protected $fillable = [
-
+        'name',
+        'images',
+        'description',
+        'qty',
+        'category_id',
+        'price',
+        'sale_price',
     ];
 
     protected $hidden = [

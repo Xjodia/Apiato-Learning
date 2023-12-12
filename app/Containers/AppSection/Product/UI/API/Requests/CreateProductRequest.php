@@ -35,7 +35,13 @@ class CreateProductRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required',
+            'name' => 'required|string|max:255',
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+            'sale_price' => 'numeric',
         ];
     }
 
