@@ -82,12 +82,6 @@ class Controller extends ApiController
     public function showCart(): JsonResponse
     {
         $user = Auth::user();
-        //        if ($user->is_admin) {
-        //            return response()->json([
-        //                'message' => 'Admin cannot view cart.',
-        //            ], 403);
-        //        }
-
         $cartItems = Cart::where('user_id', $user->id)
             ->where('status', 1)
             ->where('order_id', null)

@@ -2,6 +2,8 @@
 
 namespace App\Containers\AppSection\Product\Models;
 
+use App\Containers\AppSection\Cart\Models\Cart;
+use App\Containers\AppSection\Category\Models\Category;
 use App\Ship\Parents\Models\Model as ParentModel;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +26,16 @@ class Product extends ParentModel
     protected $casts = [
 
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function Cart()
+    {
+        return $this->hasMany(Cart::class, 'product_id');
+    }
 
     /**
      * A resource key to be used in the serialized responses.

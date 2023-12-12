@@ -2,7 +2,9 @@
 
 namespace App\Containers\AppSection\Cart\Models;
 
+use App\Containers\AppSection\Product\Models\Product;
 use App\Ship\Parents\Models\Model as ParentModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Cart extends ParentModel
 {
