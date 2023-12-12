@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Order\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::get('orders', [Controller::class, 'getAllOrders'])
+Route::get('orders', [Controller::class, 'getOrder'])
     ->middleware(['auth:api']);
 

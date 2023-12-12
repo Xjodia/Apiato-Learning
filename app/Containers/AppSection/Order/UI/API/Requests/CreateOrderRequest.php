@@ -35,7 +35,9 @@ class CreateOrderRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required',
+            'place' => 'required|string|max:255',
+            'phone_number' => 'required|numeric|digits:10',
+            'notes' => 'nullable|string|max:1000',
         ];
     }
 
