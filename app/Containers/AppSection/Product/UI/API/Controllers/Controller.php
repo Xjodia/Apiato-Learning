@@ -85,8 +85,17 @@ class Controller extends ApiController
      */
     public function deleteProduct(DeleteProductRequest $request): JsonResponse
     {
-        app(DeleteProductAction::class)->run($request);
+        $response = app(DeleteProductAction::class)->run($request);
 
-        return $this->noContent();
+        if ($response instanceof JsonResponse){
+            return $response;
+        }
+
+        $response = [
+            'message' => 'delete successfully',
+            'status' => 500,
+        ];
+
+        return $this->json($response);
     }
 }

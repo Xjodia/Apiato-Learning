@@ -19,7 +19,7 @@ class ProductTransformer extends ParentTransformer
     {
         $response = [
             'object' => $product->getResourceKey(),
-            'id' => $product->getHashedKey(),
+            'id' => $product->id,
         ];
 
         return $this->ifAdmin([

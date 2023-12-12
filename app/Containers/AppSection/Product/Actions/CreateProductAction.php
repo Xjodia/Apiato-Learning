@@ -31,7 +31,6 @@ class CreateProductAction extends ParentAction
         ];
 
         $data = $request->sanitizeInput($fields);
-
         // Create the product in the database
         $product = app(CreateProductTask::class)->run($data);
 
