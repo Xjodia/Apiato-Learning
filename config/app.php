@@ -165,6 +165,7 @@ return [
          * Application Service Providers...
          * NOTE: all service providers must be registered inside their container's main service providers.
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -181,6 +182,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // NOTE: all packages aliases must be registered inside their containers service providers
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
 class CreateProductAction extends ParentAction
 {
     /**
-     * @param CreateProductRequest $request
-     * @return Product
      * @throws CreateResourceFailedException
      * @throws IncorrectIdException
      */

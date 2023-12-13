@@ -6,7 +6,6 @@ use App\Containers\AppSection\Product\Data\Repositories\ProductRepository;
 use App\Containers\AppSection\Product\Models\Product;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Parents\Tasks\Task as ParentTask;
-use Exception;
 
 class CreateProductTask extends ParentTask
 {
@@ -22,7 +21,7 @@ class CreateProductTask extends ParentTask
     {
         try {
             return $this->repository->create($data);
-        } catch (Exception) {
+        } catch (\Exception) {
             throw new CreateResourceFailedException();
         }
     }

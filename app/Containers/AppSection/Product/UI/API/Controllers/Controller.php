@@ -8,6 +8,7 @@ use App\Containers\AppSection\Product\Actions\CreateProductAction;
 use App\Containers\AppSection\Product\Actions\DeleteProductAction;
 use App\Containers\AppSection\Product\Actions\FindProductByIdAction;
 use App\Containers\AppSection\Product\Actions\GetAllProductsAction;
+use App\Containers\AppSection\Product\Actions\ImportProductsAction;
 use App\Containers\AppSection\Product\Actions\UpdateProductAction;
 use App\Containers\AppSection\Product\UI\API\Requests\CreateProductRequest;
 use App\Containers\AppSection\Product\UI\API\Requests\DeleteProductRequest;
@@ -21,13 +22,12 @@ use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Controllers\ApiController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class Controller extends ApiController
 {
     /**
-     * @param CreateProductRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
@@ -39,8 +39,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param FindProductByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -52,8 +50,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllProductsRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
@@ -66,8 +62,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param UpdateProductRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -79,15 +73,13 @@ class Controller extends ApiController
     }
 
     /**
-     * @param DeleteProductRequest $request
-     * @return JsonResponse
      * @throws DeleteResourceFailedException
      */
     public function deleteProduct(DeleteProductRequest $request): JsonResponse
     {
         $response = app(DeleteProductAction::class)->run($request);
 
-        if ($response instanceof JsonResponse){
+        if ($response instanceof JsonResponse) {
             return $response;
         }
 
@@ -97,5 +89,10 @@ class Controller extends ApiController
         ];
 
         return $this->json($response);
+    }
+
+    public function importProducts(Request $request): JsonResponse
+    {
+        return app(ImportProductsAction::class)->run($request);
     }
 }
