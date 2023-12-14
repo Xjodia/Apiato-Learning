@@ -4,7 +4,7 @@ namespace App\Containers\AppSection\Cart\UI\API\Requests;
 
 use App\Ship\Parents\Requests\Request as ParentRequest;
 
-class CreateCartRequest extends ParentRequest
+class AddCartRequest extends ParentRequest
 {
     /**
      * Define which Roles and/or Permissions has access to this request.

@@ -26,8 +26,6 @@ use Prettus\Repository\Exceptions\RepositoryException;
 class Controller extends ApiController
 {
     /**
-     * @param CreateProductRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
@@ -39,8 +37,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param FindProductByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -52,8 +48,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllProductsRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
@@ -66,8 +60,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param UpdateProductRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -79,15 +71,13 @@ class Controller extends ApiController
     }
 
     /**
-     * @param DeleteProductRequest $request
-     * @return JsonResponse
      * @throws DeleteResourceFailedException
      */
     public function deleteProduct(DeleteProductRequest $request): JsonResponse
     {
         $response = app(DeleteProductAction::class)->run($request);
 
-        if ($response instanceof JsonResponse){
+        if ($response instanceof JsonResponse) {
             return $response;
         }
 

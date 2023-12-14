@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
 class CreateProductAction extends ParentAction
 {
     /**
-     * @param CreateProductRequest $request
-     * @return Product
      * @throws CreateResourceFailedException
      * @throws IncorrectIdException
      */
@@ -43,6 +41,7 @@ class CreateProductAction extends ParentAction
             // Update the product with the image path
             $product->update(['images' => Storage::url('images/' . $imageFileName)]);
         }
+
         return $product;
     }
 }

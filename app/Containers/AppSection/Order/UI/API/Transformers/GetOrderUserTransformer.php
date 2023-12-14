@@ -5,7 +5,7 @@ namespace App\Containers\AppSection\Order\UI\API\Transformers;
 use App\Containers\AppSection\Order\Models\Order;
 use App\Ship\Parents\Transformers\Transformer as ParentTransformer;
 
-class OrderTransformer extends ParentTransformer
+class GetOrderUserTransformer extends ParentTransformer
 {
     protected array $defaultIncludes = [
 
@@ -19,8 +19,7 @@ class OrderTransformer extends ParentTransformer
     {
         $response = [
             'object' => $order->getResourceKey(),
-            'message' => 'Checkout successful.',
-            'order' => $order,
+            'User-Order' => $order,
         ];
 
         return $this->ifAdmin([
