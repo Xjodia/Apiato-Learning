@@ -8,7 +8,9 @@
 
 <p>Thank you for using our product export service. You can download the exported file using the link below:</p>
 
-<p><a href="{{ $file }}" download="{{ $file }}">Download Exported File</a></p>
+<p>
+    <a href="{{ $file }}">Download Exported File</a>
+</p>
 
 <p>Best regards,<br>
     Your Company Name

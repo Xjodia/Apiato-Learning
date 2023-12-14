@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Product\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::delete('products/{id}', [Controller::class, 'deleteProduct'])
+Route::delete('products/{id}/cart/order/{order}', [Controller::class, 'deleteProduct'])
     ->middleware(['auth:api']);
 

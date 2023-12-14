@@ -17,6 +17,9 @@ class ExportProductTask extends ParentTask
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function run(array $data): JsonResponse
     {
         try {
@@ -31,7 +34,7 @@ class ExportProductTask extends ParentTask
             return response()->json('Successfully (TasK)', 200);
         } catch (Exception $exception){
             DB::rollBack();
-            return response()->json('Successfully (TasK)', 200);
+            throw $exception;
         }
     }
 }

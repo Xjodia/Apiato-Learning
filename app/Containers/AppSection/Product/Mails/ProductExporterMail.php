@@ -2,38 +2,57 @@
 
 namespace App\Containers\AppSection\Product\Mails;
 
-use App\Ship\Parents\Exceptions\Exception;
-use App\Ship\Parents\Mails\Mail as ParentMail;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class ProductExporterMail extends ParentMail implements ShouldQueue
+class ProductExporterMail extends Mailable implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, SerializesModels;
     protected string $file;
     protected string $emailName;
-    public function __construct($file, $emailName) {
+    protected string $filePath;
+    public function __construct($file, $emailName, $filePath) {
         $this->file = $file;
         $this->emailName = $emailName;
+        $this->filePath = $filePath;
     }
 
     /**
-     * @throws Exception
+     * Get the message envelope.
      */
-    public function build(): static
+    public function envelope(): Envelope
     {
-        try {
-            Log::info('Mail build successful.');
-            return $this->view('appSection@product::product-export-email')
-                ->attach($this->file, ['as' => 'products.xlsx'])
-                ->with([
-                    'file' => $this->file,
-                    'emailName' => $this->emailName
-                ]);
-        } catch (Exception $exception) {
-            Log::error('Error building mail: ' . $exception->getMessage());
-            throw $exception; // Rethrow the exception to let it bubble up
-        }
+        return new Envelope(
+            subject: 'Product Export',
+        );
+    }
+
+    public function content(): Content
+    {
+        return new Content(
+            view: 'ship::product-export-email',
+            with: [
+                'file' => $this->file,
+                'emailName' => $this->emailName
+            ],
+        );
+    }
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, Attachment>
+     */
+    public function attachments(): array
+    {
+        return [
+            Attachment::fromPath($this->filePath)
+        ];
     }
 }

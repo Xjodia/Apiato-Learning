@@ -15,7 +15,7 @@ class ExportProductAction extends ParentAction
      * @return array
      * @throws IncorrectIdException
      */
-    public function run(ExportProductRequest $request): array
+    public function run(ExportProductRequest $request): void
     {
         $fields = [
             'email',
@@ -23,6 +23,5 @@ class ExportProductAction extends ParentAction
         $data = $request->sanitizeInput($fields);
         app(ExportProductTask::class)->run($data);
         // $var = app(Task::class)->run($arg1, $arg2);
-        return $data;
     }
 }

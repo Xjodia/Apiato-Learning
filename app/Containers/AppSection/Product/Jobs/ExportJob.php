@@ -20,7 +20,7 @@ class  ExportJob extends ParentJob implements ShouldQueue
  {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $products;
-    private string $recipientEmail;
+    private $recipientEmail;
 
     public function __construct($products, string $recipientEmail)
     {
@@ -28,7 +28,10 @@ class  ExportJob extends ParentJob implements ShouldQueue
         $this->recipientEmail = $recipientEmail;
     }
 
-    public function handle(): JsonResponse
+    /**
+     * @throws Exception
+     */
+    public function handle(): void
     {
         $export = new ProductsExport($this->products);
         $fileName = 'products.xlsx';
@@ -48,20 +51,13 @@ class  ExportJob extends ParentJob implements ShouldQueue
         }
 
         $export->storeFile($fileName, 'public');
-
         try {
-            Log::info('Export job handled successfully.');
-            Mail::to($this->recipientEmail)->send(new ProductExporterMail($fileLocation, $this->recipientEmail));
-            Log::info('Email sent successfully.');
-            return response()->json([
-                'message' => 'Export job has been dispatched.',
-            ], 200);
+            Mail::to($this->recipientEmail)->send(
+                new ProductExporterMail($fileLocation, $this->recipientEmail, $filePath)
+            );
         } catch (Exception $exception) {
             Log::error('Error sending email: ' . $exception->getMessage());
-
-            return response()->json([
-                'message' => 'Error sending email. Please try again later.',
-            ], 500);
+            throw $exception;
         }
     }
  }
