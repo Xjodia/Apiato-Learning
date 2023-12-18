@@ -27,21 +27,9 @@ class CreateProductAction extends ParentAction
             'price',
             'sale_price',
         ];
-
         $data = $request->sanitizeInput($fields);
-        // Create the product in the database
-        $product = app(CreateProductTask::class)->run($data);
 
-        // Upload the image if it exists
-        if ($request->hasFile('images')) {
-            $imageFile = $request->file('images');
-            $imagePath = $imageFile->store('images', 'public');
-            $imageFileName = basename($imagePath);
+        return app(CreateProductTask::class)->run($data);
 
-            // Update the product with the image path
-            $product->update(['images' => Storage::url('images/' . $imageFileName)]);
-        }
-
-        return $product;
     }
 }

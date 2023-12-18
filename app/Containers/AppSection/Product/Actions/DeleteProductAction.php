@@ -8,6 +8,7 @@ use App\Containers\AppSection\Product\UI\API\Requests\DeleteProductRequest;
 use App\Ship\Exceptions\DeleteResourceFailedException;
 use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Parents\Actions\Action as ParentAction;
+use App\Ship\Parents\Exceptions\Exception;
 use Illuminate\Http\JsonResponse;
 
 class DeleteProductAction extends ParentAction
@@ -18,14 +19,6 @@ class DeleteProductAction extends ParentAction
      */
     public function run(DeleteProductRequest $request): int | JsonResponse
     {
-        $product = Product::query()->find($request->id);
-        if ($product == null){
-            $response = [
-                'message' => 'Product not found',
-            ];
-            return response()->json($response, 404);
-        }else{
-            return app(DeleteProductTask::class)->run($request->id);
-        }
+        return app(DeleteProductTask::class)->run($request->id);
     }
 }

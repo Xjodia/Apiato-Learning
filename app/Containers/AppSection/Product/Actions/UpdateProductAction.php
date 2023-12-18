@@ -21,10 +21,16 @@ class UpdateProductAction extends ParentAction
      */
     public function run(UpdateProductRequest $request): Product
     {
-        $data = $request->sanitizeInput([
-            // add your request data here
-        ]);
-
+        $fields = [
+            'name',
+            'images',
+            'description',
+            'category_id',
+            'qty',
+            'price',
+            'sale_price',
+        ];
+        $data = $request->sanitizeInput($fields);
         return app(UpdateProductTask::class)->run($data, $request->id);
     }
 }
