@@ -17,7 +17,6 @@ class ImportProductsTask extends ParentTask
     {
         $fileName = $file->getClientOriginalName();
         $filePath = $file->storeAs('excel-imports', $fileName, 'public');
-
         Excel::import(new ProductsImport(), storage_path("app/public/$filePath"));
     }
 }
