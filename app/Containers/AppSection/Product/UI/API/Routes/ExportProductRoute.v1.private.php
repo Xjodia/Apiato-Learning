@@ -2,9 +2,9 @@
 
 /**
  * @apiGroup           Product
- * @apiName            DeleteProduct
+ * @apiName
  *
- * @api                {DELETE} /v1/products/:id Delete Product
+ * @api                {GET} /v1/products/exports
  * @apiDescription     Endpoint description here...
  *
  * @apiVersion         1.0.0
@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Product\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::delete('products/{id}/cart/order/{order}', [Controller::class, 'deleteProduct'])
+Route::get('products/exports', [Controller::class, 'sendProductExportByEmail'])
     ->middleware(['auth:api']);
 

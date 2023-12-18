@@ -44,9 +44,11 @@ class Product extends ParentModel
 
     public function deleteImages(): void
     {
-        $file_path =public_path('') .$this->images;
-        if(file_exists($file_path)){
-            unlink($file_path);
+        $filePath = Storage::url($this->images);
+        // Convert the URL to a local path
+        $localPath = public_path(ltrim(parse_url($filePath, PHP_URL_PATH), '/'));
+        if (file_exists($localPath)) {
+            unlink($localPath);
         }
     }
 }
