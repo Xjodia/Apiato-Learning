@@ -4,7 +4,7 @@ namespace App\Containers\AppSection\Product\UI\API\Requests;
 
 use App\Ship\Parents\Requests\Request as ParentRequest;
 
-class UpdateProductRequest extends ParentRequest
+class ExportProductRequest extends ParentRequest
 {
     /**
      * Define which Roles and/or Permissions has access to this request.
@@ -18,7 +18,7 @@ class UpdateProductRequest extends ParentRequest
      * Id's that needs decoding before applying the validation rules.
      */
     protected array $decode = [
-        'id',
+        // 'id',
     ];
 
     /**
@@ -26,7 +26,7 @@ class UpdateProductRequest extends ParentRequest
      * validation rules on them and allows accessing them like request data.
      */
     protected array $urlParameters = [
-        'id',
+        // 'id',
     ];
 
     /**
@@ -35,12 +35,7 @@ class UpdateProductRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:category,id',
-            'qty' => 'required|numeric|gte:0',
-            'price' => 'required|numeric|gt:0',
+            'email' => 'required|email',
         ];
     }
 
