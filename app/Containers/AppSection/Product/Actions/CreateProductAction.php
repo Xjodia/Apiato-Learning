@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Storage;
 class CreateProductAction extends ParentAction
 {
     /**
-     * @param CreateProductRequest $request
-     * @return Product
      * @throws CreateResourceFailedException
      * @throws IncorrectIdException
      */
@@ -30,6 +28,8 @@ class CreateProductAction extends ParentAction
             'sale_price',
         ];
         $data = $request->sanitizeInput($fields);
+
         return app(CreateProductTask::class)->run($data);
+
     }
 }

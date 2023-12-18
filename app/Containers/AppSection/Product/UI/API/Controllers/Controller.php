@@ -32,8 +32,6 @@ use ReflectionException;
 class Controller extends ApiController
 {
     /**
-     * @param CreateProductRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
@@ -45,8 +43,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param FindProductByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -58,8 +54,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllProductsRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
@@ -72,8 +66,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param UpdateProductRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -99,6 +91,7 @@ class Controller extends ApiController
     {
         $response = app(ExportProductAction::class)->run($request);
         if ($response instanceof JsonResponse){
+
             return $response;
         }
         $response = [

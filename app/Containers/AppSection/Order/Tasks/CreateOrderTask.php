@@ -4,6 +4,7 @@ namespace App\Containers\AppSection\Order\Tasks;
 
 use App\Containers\AppSection\Cart\Models\Cart;
 use App\Containers\AppSection\Order\Data\Repositories\OrderRepository;
+use App\Containers\AppSection\Order\Exceptions\OrderFailedException;
 use App\Containers\AppSection\Order\Models\Order;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Parents\Tasks\Task as ParentTask;
@@ -21,27 +22,31 @@ class CreateOrderTask extends ParentTask
     /**
      * @throws CreateResourceFailedException
      */
-    public function run(array $data): Order|JsonResponse
+    public function run(array $data): Order
     {
         $user = Auth::user();
+        $user_id = $user->id;
 
         // Lấy danh sách các mục giỏ hàng chưa được đặt hàng (order_id là null)
-        $cartItems = Cart::where('user_id', $user->id)
-            ->where('order_id', null)
-            ->where('status', 1)
-            ->with('product') // Load thông tin sản phẩm liên quan
-            ->get();
+        $cartItems = $this->repository->cartsItem($user_id);
+
         if ($cartItems->isEmpty()) {
-            return response()->json(['message' => 'Cart is empty.'], 400);
+            throw (new OrderFailedException())->withErrors(['message' => 'Cart is empty.'], 400);
         }
 
         // Cập nhật tổng giá trị đơn đặt hàng
-        $total = Cart::where('user_id', $user->id)
+        $total = Cart::where('user_id', $user_id)
             ->where('order_id', null)->sum('total');
 
         // Bắt đầu giao dịch để đảm bảo tính toàn vẹn
         DB::beginTransaction();
-
+        // Kiểm tra số lượng sản phẩm có đủ để trừ không
+        foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product;
+            if ($product->qty < $cartItem->quantity) {
+                throw (new OrderFailedException())->withErrors(['message' => 'Insufficient quantity for product: ' . $product->name], 400);
+            }
+        }
         try {
             // Tạo mới đơn đặt hàng
             $order = Order::create([
@@ -75,8 +80,7 @@ class CreateOrderTask extends ParentTask
         } catch (\Exception $e) {
             // Nếu có lỗi, rollback giao dịch và trả về thông báo lỗi
             DB::rollBack();
-            // dd($e->getMessage());
-            return response()->json(['message' => 'Failed to checkout.'], 500);
+            throw (new OrderFailedException())->withErrors(['message' => 'Failed to checkout.'], 500);
         }
     }
 }
