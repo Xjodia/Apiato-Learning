@@ -23,8 +23,8 @@ use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Controllers\ApiController;
-use App\Ship\Parents\Requests\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class Controller extends ApiController
@@ -74,15 +74,9 @@ class Controller extends ApiController
         return $this->transform($product, ProductTransformer::class);
     }
 
-    /**
-     * @param DeleteProductRequest $request
-     * @param Product $id
-     * @return JsonResponse
-     */
     public function deleteProduct(DeleteProductRequest $request, Product $id): JsonResponse
     {
         $response = app(DeleteProductAction::class)->run($request);
-
         return $this->noContent();
     }
 
