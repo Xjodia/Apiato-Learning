@@ -32,5 +32,14 @@ class ImportProductsTask extends ParentTask
 
             throw new \Exception('Import failed. Check the error log for details.');
         }
+
+        // Export chỉ cột 'error' vào file Excel
+        $errors = $import->getErrors();
+        if (!empty($errors)) {
+            $time = time(); // Lấy thời gian hiện tại
+            $errorLogExport = new ErrorsExport($errors);
+            Excel::store($errorLogExport, "public/error-logs/error_excel-$time.xlsx");
+            throw new \Exception('Import completed with errors. Check the error log for details.');
+        }
     }
 }
