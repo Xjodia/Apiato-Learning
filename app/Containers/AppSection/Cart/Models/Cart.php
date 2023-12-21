@@ -2,7 +2,9 @@
 
 namespace App\Containers\AppSection\Cart\Models;
 
+use App\Containers\AppSection\Order\Models\Order;
 use App\Containers\AppSection\Product\Models\Product;
+use App\Containers\AppSection\User\Models\User;
 use App\Ship\Parents\Models\Model as ParentModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,7 +19,7 @@ class Cart extends ParentModel
         'quantity',
         'price',
         'total',
-        'status'
+        'status',
     ];
 
     public function product(): BelongsTo
