@@ -4,7 +4,9 @@ namespace App\Containers\AppSection\Cart\Tasks;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
 use App\Containers\AppSection\Cart\Data\Repositories\CartRepository;
+use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Parents\Tasks\Task as ParentTask;
+use mysql_xdevapi\Exception;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class GetAllCartsTask extends ParentTask
@@ -16,10 +18,13 @@ class GetAllCartsTask extends ParentTask
 
     /**
      * @throws CoreInternalErrorException
-     * @throws RepositoryException
      */
-    public function run(): mixed
+    public function run($id): mixed
     {
-        return $this->addRequestCriteria()->repository->paginate();
+        try {
+            return $this->repository->getCartItemsByUserId($id);
+        } catch (\Exception $exception) {
+            throw new CoreInternalErrorException($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 }

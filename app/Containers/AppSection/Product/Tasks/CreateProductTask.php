@@ -6,7 +6,6 @@ use App\Containers\AppSection\Product\Data\Repositories\ProductRepository;
 use App\Containers\AppSection\Product\Models\Product;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Parents\Tasks\Task as ParentTask;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +20,7 @@ class CreateProductTask extends ParentTask
     /**
      * @throws CreateResourceFailedException
      */
-    public function run(array $data): Product | JsonResponse | array
+    public function run(array $data): Product|JsonResponse|array
     {
         try {
             DB::beginTransaction();
@@ -35,8 +34,9 @@ class CreateProductTask extends ParentTask
             }
             $this->repository->create($newProduct);
             DB::commit();
+
             return $newProduct;
-        } catch (Exception) {
+        } catch (\Exception) {
             DB::rollBack();
             throw new CreateResourceFailedException();
         }

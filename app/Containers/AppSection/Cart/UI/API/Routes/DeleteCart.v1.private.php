@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Cart\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::delete('/deleteCart', [Controller::class, 'deleteCartItem'])
+Route::delete('cart/deleteCart', [Controller::class, 'deleteCartItem'])
     ->middleware(['auth:api']);
 
