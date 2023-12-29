@@ -9,6 +9,7 @@ use App\Containers\AppSection\Product\Actions\DeleteProductAction;
 use App\Containers\AppSection\Product\Actions\ExportProductAction;
 use App\Containers\AppSection\Product\Actions\FindProductByIdAction;
 use App\Containers\AppSection\Product\Actions\GetAllProductsAction;
+use App\Containers\AppSection\Product\Actions\ImportProductsAction;
 use App\Containers\AppSection\Product\Actions\UpdateProductAction;
 use App\Containers\AppSection\Product\Models\Product;
 use App\Containers\AppSection\Product\UI\API\Requests\CreateProductRequest;
@@ -23,6 +24,7 @@ use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Controllers\ApiController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class Controller extends ApiController
@@ -94,5 +96,10 @@ class Controller extends ApiController
         ];
 
         return $this->json($response);
+    }
+
+    public function importProducts(Request $request): JsonResponse
+    {
+        return app(ImportProductsAction::class)->run($request);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Containers\AppSection\Product\Tasks;
 
 use App\Containers\AppSection\Product\Data\Repositories\ProductRepository;
 use App\Containers\AppSection\Product\Jobs\ExportJob;
-use App\Containers\AppSection\Product\Models\Product;
 use App\Ship\Parents\Exceptions\Exception;
 use App\Ship\Parents\Tasks\Task as ParentTask;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +31,7 @@ class ExportProductTask extends ParentTask
             ExportJob::dispatch($products, $data['email']);
             DB::commit();
             return response()->json('Successfully (TasK)', 200);
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }

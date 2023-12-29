@@ -20,11 +20,9 @@ class Product extends ParentModel
     ];
 
     protected $hidden = [
-
     ];
 
     protected $casts = [
-
     ];
 
     public function category()
