@@ -27,6 +27,8 @@ class CreateProductAction extends ParentAction
             'sale_price',
         ];
         $data = $request->sanitizeInput($fields);
+
         return app(CreateProductTask::class)->run($data);
+
     }
 }

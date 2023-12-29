@@ -74,9 +74,13 @@ class Controller extends ApiController
         return $this->transform($product, ProductTransformer::class);
     }
 
-    public function deleteProduct(DeleteProductRequest $request, Product $id): JsonResponse
+    /**
+     * @return JsonResponse
+     */
+    public function deleteProduct(DeleteProductRequest $request, Product $id)
     {
         $response = app(DeleteProductAction::class)->run($request);
+
         return $this->noContent();
     }
 

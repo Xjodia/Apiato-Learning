@@ -19,7 +19,8 @@ class OrderTransformer extends ParentTransformer
     {
         $response = [
             'object' => $order->getResourceKey(),
-            'id' => $order->getHashedKey(),
+            'message' => 'Checkout successful.',
+            'order' => $order,
         ];
 
         return $this->ifAdmin([

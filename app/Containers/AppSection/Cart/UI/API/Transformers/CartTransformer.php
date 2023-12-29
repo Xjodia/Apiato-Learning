@@ -19,7 +19,7 @@ class CartTransformer extends ParentTransformer
     {
         $response = [
             'object' => $cart->getResourceKey(),
-            'id' => $cart->getHashedKey(),
+            'cartItems' => $cart,
         ];
 
         return $this->ifAdmin([
