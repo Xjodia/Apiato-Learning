@@ -28,6 +28,7 @@
         }
     ],
     "require": {
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-gettext": "*",
         "ext-mbstring": "*",
@@ -39,7 +40,13 @@
         "laravel/framework": "^10.0",
         "laravel/tinker": "^2.8",
         "lcobucci/clock": "3.0.0",
-        "php": "^8.1",
+        "maatwebsite/excel": "^3.1",
+<<<<<<< HEAD
+=======
+        "phpoffice/phpspreadsheet": "^1.29",
+        "symfony/http-client": "^7.0",
+        "symfony/mailgun-mailer": "^7.0",
+>>>>>>> dev
         "wikimedia/composer-merge-plugin": "^2.0.1"
     },
     "require-dev": {
@@ -48,6 +55,7 @@
         "fakerphp/faker": "^1.19.1",
         "friendsofphp/php-cs-fixer": "^3.8.0",
         "jetbrains/phpstorm-attributes": "^1.0",
+        "laravel/homestead": "^14.5",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.0",

@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Cart\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::post('carts', [Controller::class, 'createCart'])
+Route::post('cart/add-to-cart', [Controller::class, 'addToCart'])
     ->middleware(['auth:api']);
 

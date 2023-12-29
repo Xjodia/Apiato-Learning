@@ -25,6 +25,6 @@
 use App\Containers\AppSection\Order\UI\API\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-Route::post('orders', [Controller::class, 'createOrder'])
+Route::post('order/place-order', [Controller::class, 'placeOrder'])
     ->middleware(['auth:api']);
 

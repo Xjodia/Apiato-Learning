@@ -2,6 +2,7 @@
 
 namespace App\Containers\AppSection\Cart\Actions;
 
+use App\Containers\AppSection\Cart\Models\Cart;
 use App\Containers\AppSection\Cart\Tasks\DeleteCartTask;
 use App\Containers\AppSection\Cart\UI\API\Requests\DeleteCartRequest;
 use App\Ship\Exceptions\DeleteResourceFailedException;
@@ -16,8 +17,8 @@ class DeleteCartAction extends ParentAction
      * @throws DeleteResourceFailedException
      * @throws NotFoundException
      */
-    public function run(DeleteCartRequest $request): int
+    public function run(DeleteCartRequest $request): array
     {
-        return app(DeleteCartTask::class)->run($request->id);
+        return app(DeleteCartTask::class)->run($request->product_id);
     }
 }

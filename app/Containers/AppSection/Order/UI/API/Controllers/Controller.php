@@ -4,16 +4,19 @@ namespace App\Containers\AppSection\Order\UI\API\Controllers;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
 use Apiato\Core\Exceptions\InvalidTransformerException;
-use App\Containers\AppSection\Order\Actions\CreateOrderAction;
 use App\Containers\AppSection\Order\Actions\DeleteOrderAction;
 use App\Containers\AppSection\Order\Actions\FindOrderByIdAction;
 use App\Containers\AppSection\Order\Actions\GetAllOrdersAction;
+use App\Containers\AppSection\Order\Actions\GetOrderAction;
+use App\Containers\AppSection\Order\Actions\PlaceOrderAction;
 use App\Containers\AppSection\Order\Actions\UpdateOrderAction;
+use App\Containers\AppSection\Order\Models\Order;
 use App\Containers\AppSection\Order\UI\API\Requests\CreateOrderRequest;
 use App\Containers\AppSection\Order\UI\API\Requests\DeleteOrderRequest;
 use App\Containers\AppSection\Order\UI\API\Requests\FindOrderByIdRequest;
 use App\Containers\AppSection\Order\UI\API\Requests\GetAllOrdersRequest;
 use App\Containers\AppSection\Order\UI\API\Requests\UpdateOrderRequest;
+use App\Containers\AppSection\Order\UI\API\Transformers\GetOrderUserTransformer;
 use App\Containers\AppSection\Order\UI\API\Transformers\OrderTransformer;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Exceptions\DeleteResourceFailedException;
@@ -21,26 +24,30 @@ use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Controllers\ApiController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class Controller extends ApiController
 {
     /**
-     * @param CreateOrderRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
     public function createOrder(CreateOrderRequest $request): JsonResponse
     {
-        $order = app(CreateOrderAction::class)->run($request);
+        $order = app(PlaceOrderAction::class)->run($request);
+
+        return $this->created($this->transform($order, OrderTransformer::class));
+    }
+
+    public function placeOrder(CreateOrderRequest $request): JsonResponse
+    {
+        $order = app(PlaceOrderAction::class)->run($request);
 
         return $this->created($this->transform($order, OrderTransformer::class));
     }
 
     /**
-     * @param FindOrderByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -52,8 +59,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllOrdersRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
@@ -65,9 +70,14 @@ class Controller extends ApiController
         return $this->transform($orders, OrderTransformer::class);
     }
 
+    public function getOrder(GetAllOrdersRequest $request): JsonResponse
+    {
+        $userOrder = app(GetOrderAction::class)->run($request);
+
+        return $this->created($this->transform($userOrder, GetOrderUserTransformer::class));
+    }
+
     /**
-     * @param UpdateOrderRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -79,8 +89,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param DeleteOrderRequest $request
-     * @return JsonResponse
      * @throws DeleteResourceFailedException
      */
     public function deleteOrder(DeleteOrderRequest $request): JsonResponse

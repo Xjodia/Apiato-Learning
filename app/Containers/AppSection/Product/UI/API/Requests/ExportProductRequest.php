@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Containers\AppSection\Cart\UI\API\Requests;
+namespace App\Containers\AppSection\Product\UI\API\Requests;
 
 use App\Ship\Parents\Requests\Request as ParentRequest;
 
-class CreateCartRequest extends ParentRequest
+class ExportProductRequest extends ParentRequest
 {
     /**
      * Define which Roles and/or Permissions has access to this request.
@@ -35,7 +35,7 @@ class CreateCartRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required',
+            'email' => 'required|email',
         ];
     }
 

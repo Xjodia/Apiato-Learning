@@ -6,28 +6,30 @@ use Apiato\Core\Exceptions\CoreInternalErrorException;
 use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\AppSection\Product\Actions\CreateProductAction;
 use App\Containers\AppSection\Product\Actions\DeleteProductAction;
+use App\Containers\AppSection\Product\Actions\ExportProductAction;
 use App\Containers\AppSection\Product\Actions\FindProductByIdAction;
 use App\Containers\AppSection\Product\Actions\GetAllProductsAction;
+use App\Containers\AppSection\Product\Actions\ImportProductsAction;
 use App\Containers\AppSection\Product\Actions\UpdateProductAction;
+use App\Containers\AppSection\Product\Models\Product;
 use App\Containers\AppSection\Product\UI\API\Requests\CreateProductRequest;
 use App\Containers\AppSection\Product\UI\API\Requests\DeleteProductRequest;
+use App\Containers\AppSection\Product\UI\API\Requests\ExportProductRequest;
 use App\Containers\AppSection\Product\UI\API\Requests\FindProductByIdRequest;
 use App\Containers\AppSection\Product\UI\API\Requests\GetAllProductsRequest;
 use App\Containers\AppSection\Product\UI\API\Requests\UpdateProductRequest;
 use App\Containers\AppSection\Product\UI\API\Transformers\ProductTransformer;
 use App\Ship\Exceptions\CreateResourceFailedException;
-use App\Ship\Exceptions\DeleteResourceFailedException;
 use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Controllers\ApiController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class Controller extends ApiController
 {
     /**
-     * @param CreateProductRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
@@ -39,8 +41,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param FindProductByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -52,8 +52,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllProductsRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
@@ -66,8 +64,6 @@ class Controller extends ApiController
     }
 
     /**
-     * @param UpdateProductRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -79,14 +75,31 @@ class Controller extends ApiController
     }
 
     /**
-     * @param DeleteProductRequest $request
      * @return JsonResponse
-     * @throws DeleteResourceFailedException
      */
-    public function deleteProduct(DeleteProductRequest $request): JsonResponse
+    public function deleteProduct(DeleteProductRequest $request, Product $id)
     {
-        app(DeleteProductAction::class)->run($request);
+        $response = app(DeleteProductAction::class)->run($request);
 
         return $this->noContent();
+    }
+
+    public function sendProductExportByEmail(ExportProductRequest $request): JsonResponse
+    {
+        $response = app(ExportProductAction::class)->run($request);
+        if ($response instanceof JsonResponse) {
+            return $response;
+        }
+        $response = [
+            'message' => 'Export product and send mail successful',
+            'status' => 200,
+        ];
+
+        return $this->json($response);
+    }
+
+    public function importProducts(Request $request): JsonResponse
+    {
+        return app(ImportProductsAction::class)->run($request);
     }
 }

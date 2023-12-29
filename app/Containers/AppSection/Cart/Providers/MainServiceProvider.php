@@ -29,8 +29,7 @@ class MainServiceProvider extends ParentMainServiceProvider
     public function register(): void
     {
         parent::register();
+        $this->app->register(CartServiceProvider::class);
 
-        // $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        // ...
     }
 }

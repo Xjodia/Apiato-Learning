@@ -4,16 +4,17 @@ namespace App\Containers\AppSection\Cart\UI\API\Controllers;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
 use Apiato\Core\Exceptions\InvalidTransformerException;
-use App\Containers\AppSection\Cart\Actions\CreateCartAction;
+use App\Containers\AppSection\Cart\Actions\AddToCartAction;
 use App\Containers\AppSection\Cart\Actions\DeleteCartAction;
 use App\Containers\AppSection\Cart\Actions\FindCartByIdAction;
 use App\Containers\AppSection\Cart\Actions\GetAllCartsAction;
 use App\Containers\AppSection\Cart\Actions\UpdateCartAction;
-use App\Containers\AppSection\Cart\UI\API\Requests\CreateCartRequest;
+use App\Containers\AppSection\Cart\UI\API\Requests\AddCartRequest;
 use App\Containers\AppSection\Cart\UI\API\Requests\DeleteCartRequest;
 use App\Containers\AppSection\Cart\UI\API\Requests\FindCartByIdRequest;
 use App\Containers\AppSection\Cart\UI\API\Requests\GetAllCartsRequest;
 use App\Containers\AppSection\Cart\UI\API\Requests\UpdateCartRequest;
+use App\Containers\AppSection\Cart\UI\API\Transformers\AddToCartTransformer;
 use App\Containers\AppSection\Cart\UI\API\Transformers\CartTransformer;
 use App\Ship\Exceptions\CreateResourceFailedException;
 use App\Ship\Exceptions\DeleteResourceFailedException;
@@ -26,21 +27,17 @@ use Prettus\Repository\Exceptions\RepositoryException;
 class Controller extends ApiController
 {
     /**
-     * @param CreateCartRequest $request
-     * @return JsonResponse
      * @throws InvalidTransformerException
      * @throws CreateResourceFailedException
      */
-    public function createCart(CreateCartRequest $request): JsonResponse
+    public function addToCart(AddCartRequest $request): JsonResponse
     {
-        $cart = app(CreateCartAction::class)->run($request);
+        $cart = app(AddToCartAction::class)->run($request);
 
-        return $this->created($this->transform($cart, CartTransformer::class));
+        return $this->created($this->transform($cart, AddToCartTransformer::class));
     }
 
     /**
-     * @param FindCartByIdRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws NotFoundException
      */
@@ -52,22 +49,19 @@ class Controller extends ApiController
     }
 
     /**
-     * @param GetAllCartsRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws CoreInternalErrorException
      * @throws RepositoryException
      */
-    public function getAllCarts(GetAllCartsRequest $request): array
+    public function showCart(GetAllCartsRequest $request): array
     {
         $carts = app(GetAllCartsAction::class)->run($request);
 
         return $this->transform($carts, CartTransformer::class);
     }
 
+
     /**
-     * @param UpdateCartRequest $request
-     * @return array
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
@@ -79,14 +73,13 @@ class Controller extends ApiController
     }
 
     /**
-     * @param DeleteCartRequest $request
-     * @return JsonResponse
      * @throws DeleteResourceFailedException
      */
-    public function deleteCart(DeleteCartRequest $request): JsonResponse
+    public function deleteCartItem(DeleteCartRequest $request): array
     {
-        app(DeleteCartAction::class)->run($request);
+        $cart = app(DeleteCartAction::class)->run($request);
 
-        return $this->noContent();
+        return $cart;
     }
+
 }

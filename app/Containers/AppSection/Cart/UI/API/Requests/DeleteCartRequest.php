@@ -35,7 +35,7 @@ class DeleteCartRequest extends ParentRequest
     public function rules(): array
     {
         return [
-            // 'id' => 'required'
+            'product_id' => 'required|exists:products,id',
         ];
     }
 

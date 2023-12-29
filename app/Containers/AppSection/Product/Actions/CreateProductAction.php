@@ -12,17 +12,23 @@ use App\Ship\Parents\Actions\Action as ParentAction;
 class CreateProductAction extends ParentAction
 {
     /**
-     * @param CreateProductRequest $request
-     * @return Product
      * @throws CreateResourceFailedException
      * @throws IncorrectIdException
      */
     public function run(CreateProductRequest $request): Product
     {
-        $data = $request->sanitizeInput([
-            // add your request data here
-        ]);
+        $fields = [
+            'name',
+            'images',
+            'description',
+            'category_id',
+            'qty',
+            'price',
+            'sale_price',
+        ];
+        $data = $request->sanitizeInput($fields);
 
         return app(CreateProductTask::class)->run($data);
+
     }
 }

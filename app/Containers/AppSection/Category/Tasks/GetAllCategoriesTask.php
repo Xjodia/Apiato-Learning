@@ -20,6 +20,6 @@ class GetAllCategoriesTask extends ParentTask
      */
     public function run(): mixed
     {
-        return $this->addRequestCriteria()->repository->paginate();
+        return $this->repository->addRequestCriteria()->paginate();
     }
 }

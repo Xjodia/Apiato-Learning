@@ -19,12 +19,16 @@ class ProductTransformer extends ParentTransformer
     {
         $response = [
             'object' => $product->getResourceKey(),
-            'id' => $product->getHashedKey(),
+            'id' => $product->id,
         ];
 
         return $this->ifAdmin([
             'real_id' => $product->id,
-            'created_at' => $product->created_at,
+            'name' => $product->created_at,
+            'images' => url($product->images,),
+            'description' => $product->description,
+            'price' => $product->price,
+            'sale_price' => $product->sale_price,
             'updated_at' => $product->updated_at,
             'readable_created_at' => $product->created_at->diffForHumans(),
             'readable_updated_at' => $product->updated_at->diffForHumans(),
